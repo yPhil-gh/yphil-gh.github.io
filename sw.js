@@ -1,4 +1,4 @@
-const cacheName = 'v1';
+const cacheName = 'v12';
 
 console.log('SW: I am alive, the cache is [%s]', cacheName);
 
@@ -7,6 +7,18 @@ const cacheAssets = [
     'style.css',
     'favicon.ico'
 ];
+
+self.clients.matchAll().then(function (clients){
+    clients.forEach(function(client){
+        console.log('SWx:');
+        client.postMessage({
+            type: 'log',
+            msg: "Hey I just got a fetch from you!",
+            url: 'event.request.url',
+            cache: cacheName
+        });
+    });
+});
 
 self.addEventListener('install', (e) => {
     console.log('SW: INSTALLED');
@@ -49,16 +61,6 @@ self.addEventListener('fetch', function(event) {
 
                     caches.open(cacheName).then((cache) => {
                         cache.put(event.request, responseClone);
-                    });
-
-                    // Send a message to the client.
-                    self.clients.matchAll().then(function (clients){
-                        clients.forEach(function(client){
-                            client.postMessage({
-                                msg: "Hey I just got a fetch from you!",
-                                url: event.request.url
-                            });
-                        });
                     });
 
                     return response;

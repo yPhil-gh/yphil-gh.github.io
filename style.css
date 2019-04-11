@@ -76,3 +76,7 @@ footer {
   text-align: center;
   width: 100%;
 }
+
+#debugDiv {
+  border: 1px solid #f00;
+}
