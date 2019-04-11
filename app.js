@@ -19,7 +19,7 @@ if ('serviceWorker' in navigator) {
 
     navigator.serviceWorker.getRegistrations().then(function(registrations) {
         for(let registration of registrations) {
-            console.log('registration: [%s] scope: %s', registration.active, registration.scope);
+            console.log('reg scriptURL: [%s] scope: %s', registration.active.scriptURL, registration.scope);
             // registration.unregister();
         }
     });
