@@ -19,7 +19,7 @@ if ('serviceWorker' in navigator) {
 
     navigator.serviceWorker.getRegistrations().then(function(registrations) {
         for(let registration of registrations) {
-            console.log('registration: [%s]', registration);
+            console.log('registration: [%s]', registration.active);
             // registration.unregister();
         }
     });
