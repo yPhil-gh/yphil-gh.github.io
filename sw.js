@@ -26,19 +26,19 @@ self.addEventListener('fetch', function(event) {
         if (response !== undefined) {
             return response;
         } else {
-            return fetch(event.request).then((response) => {
-                // response may be used only once
-                // we need to save clone to put one copy in cache
-                // and serve second one
-                let responseClone = response.clone();
+            return fetch(event.request)
+                .then((response) => {
+                    let responseClone = response.clone();
 
-                caches.open(cacheName).then((cache) => {
-                    cache.put(event.request, responseClone);
+                    caches.open(cacheName).then((cache) => {
+                        cache.put(event.request, responseClone);
+                    });
+
+                    return response;
+                }).catch((err) => {
+                    console.log('SW: Problem reading the file in cache [%s]', err);
+                    return caches.match(event.request);
                 });
-                return response;
-            }).catch(function () {
-                return caches.match(event.request);
-            });
         }
     }));
 });
