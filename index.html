@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>PWA tst xxx</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  </head>
+  <body>
+    <header>
+      <h1>PWA TST</h1>
+    </header>
+    <main>
+      <div><p>Cache : <span id="cacheName"></span></p></div>
+      <ul>
+        <li><a href="other.html">Link</a></li>
+        <li><a href="two.html">Dead Link</a></li>
+      </ul>
+    </main>
+    <script>
+
+     // Also if navigator.serviceWorker
+     if ('serviceWorker' in navigator) {
+       console.log('ok: (%s)');
+
+       navigator.serviceWorker
+                .getRegistration()
+                .then(registration => {
+                  if (registration) {
+                    console.log('YO!');
+                  }
+                });
+
+       // window.addEventListener('load', () => {
+       //   navigator.serviceWorker
+       //            .register('sw.js')
+       //            .then(reg => console.log('NEW Service Worker: Registered'))
+       //            .catch(err => console.log(`Service Worker: Error ${err}`));
+       // });
+     }
+
+     document.getElementById( 'cacheName' ).innerHTML = "cacheName";
+
+    </script>
+  </body>
+</html>
