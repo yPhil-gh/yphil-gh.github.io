@@ -23,14 +23,18 @@
 
      // Also if navigator.serviceWorker
      if ('serviceWorker' in navigator) {
-       console.log('ok: (%s)');
+       console.log('ok');
+
+       navigator.serviceWorker
+                .register('sw.js')
+                .then(reg => console.log('NEW Service Worker: Registered'))
+                .catch(err => console.log(`Service Worker: Error ${err}`));
 
        navigator.serviceWorker
                 .getRegistration()
                 .then(registration => {
                   if (registration) {
-                    console.log('Yu! %s', JSON.stringify(registration));
-                    registration.unregister().then(function(boolean) {
+                    registration.unregister().then((boolean) => {
                       console.log('UnReg :', boolean)
                     });
                   }
@@ -42,13 +46,6 @@
                     error
                   );
                 });
-
-       // window.addEventListener('load', () => {
-       //   navigator.serviceWorker
-       //            .register('sw.js')
-       //            .then(reg => console.log('NEW Service Worker: Registered'))
-       //            .catch(err => console.log(`Service Worker: Error ${err}`));
-       // });
      }
 
      document.getElementById( 'cacheName' ).innerHTML = "cacheName";
