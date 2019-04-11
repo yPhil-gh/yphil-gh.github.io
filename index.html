@@ -31,6 +31,13 @@
                   if (registration) {
                     console.log('Yu! %s', JSON.stringify(registration));
                   }
+                })
+                .catch(error => {
+                  // Il y a eu un problème
+                  console.error(
+                    "App: Crash de Service Worker",
+                    error
+                  );
                 });
 
        // window.addEventListener('load', () => {
