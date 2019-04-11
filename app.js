@@ -26,8 +26,10 @@ if ('serviceWorker' in navigator) {
         .then(registration => {
             if (registration) {
                 registration.unregister().then((boolean) => {
-                    console.log('UnReg :', boolean)
+                    console.log('UnReg :', boolean);
                 });
+            } else {
+                console.log('No SW registered');
             }
         })
         .catch(error => {
