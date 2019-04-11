@@ -11,8 +11,13 @@ if ('serviceWorker' in navigator) {
 
     }).catch(function(error) {
         // registration failed
-        console.log('Registration failed with ' + error);
+        console.log('Registration failed: %s ', error);
     });
+
+    navigator.serviceWorker.addEventListener('message', event => {
+        console.log('SW: MSG (%s, %s)', event.data.msg, event.data.url);
+    });
+
 }
 
 // if ('serviceWorker' in navigator) {

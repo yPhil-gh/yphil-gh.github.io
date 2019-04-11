@@ -1,4 +1,4 @@
-const cacheName = 'v2';
+const cacheName = 'v1';
 
 console.log('SW: I am alive, the cache is [%s]', cacheName);
 
@@ -49,6 +49,16 @@ self.addEventListener('fetch', function(event) {
 
                     caches.open(cacheName).then((cache) => {
                         cache.put(event.request, responseClone);
+                    });
+
+                    // Send a message to the client.
+                    self.clients.matchAll().then(function (clients){
+                        clients.forEach(function(client){
+                            client.postMessage({
+                                msg: "Hey I just got a fetch from you!",
+                                url: event.request.url
+                            });
+                        });
                     });
 
                     return response;
