@@ -1,4 +1,4 @@
-const cacheName = 'v1';
+const cacheName = 'v2';
 
 console.log('SW: I am alive, the cache is [%s]', cacheName);
 
@@ -9,13 +9,30 @@ const cacheAssets = [
 ];
 
 self.addEventListener('install', (e) => {
-    console.log('Service worker installed');
+    console.log('SW: INSTALLED');
     e.waitUntil(
         caches
             .open(cacheName)
             .then(cache => {
                 return cache.addAll(cacheAssets);
             })
+    );
+});
+
+self.addEventListener('activate', (e) => {
+    console.log('SW: ACTIVATED');
+    // Remove unwanted caches
+    e.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cache => {
+                    if(cache !== cacheName){
+                        console.log('SW: CLEARING OLD (%s) CACHE', cache);
+                        return caches.delete(cache);
+                    }
+                })
+            );
+        })
     );
 });
 
