@@ -4,7 +4,7 @@ if ('serviceWorker' in navigator) {
         if(reg.installing) {
             console.log('Service worker installing');
         } else if(reg.waiting) {
-            console.log('Service worker installed');
+            console.log('Service worker waiting');
         } else if(reg.active) {
             console.log('Service worker active');
         }
