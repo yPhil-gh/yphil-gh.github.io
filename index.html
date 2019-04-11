@@ -30,6 +30,9 @@
                 .then(registration => {
                   if (registration) {
                     console.log('Yu! %s', JSON.stringify(registration));
+                    registration.unregister().then(function(boolean) {
+                      console.log('UnReg :', boolean)
+                    });
                   }
                 })
                 .catch(error => {
