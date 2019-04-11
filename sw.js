@@ -1,3 +1,3 @@
 console.log(
-    "SW: I'm alive"
+    "SW: I am alive"
 );
