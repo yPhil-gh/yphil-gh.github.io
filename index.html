@@ -29,23 +29,24 @@
                 .register('sw.js')
                 .then(reg => console.log('NEW Service Worker: Registered'))
                 .catch(err => console.log(`Service Worker: Error ${err}`));
-
-       navigator.serviceWorker
-                .getRegistration()
-                .then(registration => {
-                  if (registration) {
-                    registration.unregister().then((boolean) => {
-                      console.log('UnReg :', boolean)
-                    });
-                  }
-                })
-                .catch(error => {
-                  // Il y a eu un problème
-                  console.error(
-                    "App: Crash de Service Worker",
-                    error
-                  );
-                });
+       //
+       //        navigator.serviceWorker
+       //                 .getRegistration()
+       //                 .then(registration => {
+       //                   if (registration) {
+       //                     registration.unregister().then((boolean) => {
+       //                       console.log('UnReg :', boolean)
+       //                     });
+       //                   }
+       //                 })
+       //                 .catch(error => {
+       //                   // Il y a eu un problème
+       //                   console.error(
+       //                     "App: Crash de Service Worker",
+       //                     error
+       //                   );
+       //                 });
+       //
      }
 
      document.getElementById( 'cacheName' ).innerHTML = "cacheName";
