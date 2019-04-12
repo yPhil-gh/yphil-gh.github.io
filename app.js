@@ -16,11 +16,13 @@ function reload() {
     window.location.reload(true);
 }
 
-// if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.getRegistrations().then((registrations) => {
-//         for (let registration of registrations) {
-//             console.log('reg scriptURL: [%s] scope: %s', registration.active.scriptURL, registration.scope);
-//             // registration.unregister();
-//         }
-//     });
-// }
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+            if (registration.active.scriptURL == 'sw.js') {
+                console.log('UNREG scriptURL: [%s] scope: %s', registration.active.scriptURL, registration.scope);
+                registration.unregister();
+            }
+        }
+    });
+}

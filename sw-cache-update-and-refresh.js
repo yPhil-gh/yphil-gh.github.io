@@ -1,6 +1,6 @@
 // https://serviceworke.rs/strategy-cache-update-and-refresh_service-worker_doc.html
 
-var cacheName = 'v1';
+var cacheName = 'v3';
 
 console.log('SW: I am alive, the cache is [%s]', cacheName);
 
