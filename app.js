@@ -6,7 +6,7 @@ navigator.serviceWorker.register('sw-cache-update-and-refresh.js', {
 
 // Load controlled pages once the worker is active.
 
-navigator.serviceWorker.ready.then(reload);
+// navigator.serviceWorker.ready.then(reload);
 
 // Reload on demand.
 var reloadButton = document.querySelector('#reload');

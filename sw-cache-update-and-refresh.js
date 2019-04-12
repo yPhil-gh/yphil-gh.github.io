@@ -67,6 +67,9 @@ function refresh(response) {
     return self.clients.matchAll().then(function (clients) {
         clients.forEach(function (client) {
 
+
+            console.log('REFRESH!!');
+
             // Sends a message to the clients.
             // Encode which resource has been updated. By including the ETag the client can check if the content has changed.
             // Notice not all servers return the ETag header. If this is not provided you should use other cache headers or rely on your own means to check if the content has changed.
