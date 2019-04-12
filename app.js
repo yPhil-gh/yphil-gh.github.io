@@ -1,23 +1,19 @@
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js', { scope: '/' }).then((reg) => {
+// Register the ServiceWorker limiting its action to those URLs starting by controlled. The scope is not a path but a prefix. First, it is converted into an absolute URL, then used to determine if a page is controlled by testing it is a prefix of the request URL.
 
-        if(reg.installing) {
-            console.log('Service worker installing');
-        } else if(reg.waiting) {
-            console.log('Service worker waiting');
-        } else if(reg.active) {
-            console.log('Service worker active');
-        }
+navigator.serviceWorker.register('sw-cache-update-and-refresh.js', {
+    scope: '/'
+});
 
-    }).catch(function(error) {
-        // registration failed
-        console.log('Registration failed: %s ', error);
-    });
+// Load controlled pages once the worker is active.
 
-    navigator.serviceWorker.addEventListener('message', event => {
-        console.log('SW: MSG type: %s', JSON.stringify(event.data));
-    });
+navigator.serviceWorker.ready.then(reload);
 
+// Reload on demand.
+var reloadButton = document.querySelector('#reload');
+reloadButton.onclick = reload;
+
+function reload() {
+    window.location.reload(true);
 }
 
 // if ('serviceWorker' in navigator) {
