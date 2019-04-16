@@ -70,9 +70,11 @@ addEventListener('fetch', event => {
 });
 
 function updateCache(request) {
-    return caches.open(cacheName).then(function (cache) {
-        return fetch(request).then(function (response) {
-            return cache.put(request, response);
+    return caches.open(cacheName).then(cache => {
+        return fetch(request).then(response => {
+            if (res.status < 400)
+                return cache.put(e.request, resClone);
+            return response;
         });
     });
 }
