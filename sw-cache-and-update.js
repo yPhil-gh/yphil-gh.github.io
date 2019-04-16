@@ -1,7 +1,7 @@
 // https://serviceworke.rs/strategy-cache-and-update_service-worker_doc.html
 
 // Détails des fichiers à pre-cacher
-var cacheName = 'v2';
+var cacheName = 'v3';
 
 console.log('SW: I am alive, the cache is [%s]', cacheName);
 
@@ -56,12 +56,7 @@ addEventListener('fetch', event => {
 
         // On regarde si elle est dans le cache
 
-        const cachedResponse = await caches.match(event.request)
-              .then(console.log('YUP, IN CACHE'))
-              .catch(() => {
-                  console.log('NOT IN CACHE');
-                  updateCache(event.request);
-              });
+        const cachedResponse = await caches.match(event.request);
 
         // Si oui, on la returne
         if (cachedResponse) {
@@ -70,7 +65,7 @@ addEventListener('fetch', event => {
         }
         // Sinon, on sert la requete à partir du réseau
         console.log('Serving: [%s] from the NETWORK', event.request.url);
-        return fetch(event.request);
+        return fetch(event.request).then(updateCache(event.request));
     }().then(console.log('Promised')));
 });
 
