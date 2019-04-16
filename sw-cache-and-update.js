@@ -56,7 +56,9 @@ addEventListener('fetch', event => {
 
         // On regarde si elle est dans le cache
 
-        const cachedResponse = await caches.match(event.request).catch('NOT IN CACHE');
+        const cachedResponse = await caches.match(event.request)
+              .then(console.log('YUP, IN CACHE'))
+              .catch(console.log('NOT IN CACHE'));
 
         // Si oui, on la returne
         if (cachedResponse) {
