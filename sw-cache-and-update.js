@@ -1,7 +1,7 @@
 // https://serviceworke.rs/strategy-cache-and-update_service-worker_doc.html
 
 // Détails des fichiers à pre-cacher
-var cacheName = 'v1';
+var cacheName = 'v2';
 
 console.log('SW: I am alive, the cache is [%s]', cacheName);
 
@@ -72,51 +72,11 @@ addEventListener('fetch', event => {
 function updateCache(request) {
     return caches.open(cacheName).then(cache => {
         return fetch(request).then(response => {
-            if (res.status < 400)
-                return cache.put(e.request, resClone);
+            const resClone = response.clone();
+
+            if (response.status < 400)
+                return cache.put(request, resClone);
             return response;
         });
     });
 }
-
-// Envoi d'un MSG au client
-
-function msgClient(text) {
-    return self.clients.matchAll().then(function (clients) {
-        clients.forEach(function (client) {
-            var message = {
-                type: 'refresh',
-                text: text
-            };
-            client.postMessage(JSON.stringify(message));
-        });
-    });
-}
-
-function send_message_to_client(client, msg){
-    return new Promise(function(resolve, reject){
-        var msg_chan = new MessageChannel();
-
-        msg_chan.port1.onmessage = function(event){
-            if(event.data.error){
-                reject(event.data.error);
-            }else{
-                resolve(event.data);
-            }
-        };
-
-        client.postMessage("SW Says: '"+msg+"'", [msg_chan.port2]);
-    });
-}
-
-function send_message_to_all_clients(msg){
-    clients.matchAll().then(clients => {
-        clients.forEach(client => {
-            send_message_to_client(client, msg).then(m => console.log("SW Received Message: "+m));
-        });
-    });
-}
-
-self.addEventListener('message', function(event){
-    console.log("SW Received Message: " + event.data);
-});
