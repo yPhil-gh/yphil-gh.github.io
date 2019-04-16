@@ -63,7 +63,7 @@ addEventListener('fetch', event => {
             console.log('Serving: [%s] from the CACHE', event.request.url);
             return cachedResponse;
         }
-        // Sinon, on sert la requete à partir du réseau
+        // Sinon, on sert la requete à partir du réseau, et ensuite on la cache.
         console.log('Serving: [%s] from the NETWORK', event.request.url);
         return fetch(event.request).then(updateCache(event.request));
     }().then(console.log('Promised')));
