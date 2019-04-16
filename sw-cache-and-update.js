@@ -66,7 +66,7 @@ addEventListener('fetch', event => {
         // Sinon, on sert la requete à partir du réseau
         console.log('Serving: [%s] from the NETWORK', event.request.url);
         return fetch(event.request);
-    }());
+    }().then(console.log('Promised')));
 });
 
 // Envoi d'un MSG au client
