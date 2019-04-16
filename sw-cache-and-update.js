@@ -58,8 +58,12 @@ addEventListener('fetch', event => {
         const cachedResponse = await caches.match(event.request);
 
         // Si oui, on la returne
-        if (cachedResponse) return cachedResponse;
+        if (cachedResponse) {
+            console.log('Serving: [%s] from the CACHE', event.request.url);
+            return cachedResponse;
+        }
         // Sinon, on sert la requete à partir du réseau
+        console.log('Serving: [%s] from the NETWORK', event.request.url);
         return fetch(event.request);
     }());
 });
