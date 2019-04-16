@@ -58,7 +58,10 @@ addEventListener('fetch', event => {
 
         const cachedResponse = await caches.match(event.request)
               .then(console.log('YUP, IN CACHE'))
-              .catch(console.log('NOT IN CACHE'));
+              .catch(() => {
+                  console.log('NOT IN CACHE');
+                  updateCache(event.request);
+              });
 
         // Si oui, on la returne
         if (cachedResponse) {
@@ -70,6 +73,14 @@ addEventListener('fetch', event => {
         return fetch(event.request);
     }().then(console.log('Promised')));
 });
+
+function updateCache(request) {
+    return caches.open(cacheName).then(function (cache) {
+        return fetch(request).then(function (response) {
+            return cache.put(request, response);
+        });
+    });
+}
 
 // Envoi d'un MSG au client
 
