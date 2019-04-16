@@ -1,7 +1,7 @@
 // https://serviceworke.rs/strategy-cache-and-update_service-worker_doc.html
 
 // Détails des fichiers à pre-cacher
-var cacheName = 'v3';
+var cacheName = 'v1';
 
 console.log('SW: I am alive, the cache is [%s]', cacheName);
 
