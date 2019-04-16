@@ -1,33 +1,41 @@
-const cacheName = 'v1';
+// Détails des fichiers à pre-cacher
+var cacheName = 'v2';
 
 console.log('SW: I am alive, the cache is [%s]', cacheName);
 
-const cacheAssets = [
+var cacheAssets = [
     'index.html',
+    'app.js',
     'style.css',
     'favicon.ico'
 ];
 
-self.addEventListener('install', (e) => {
-    console.log('SW: INSTALLED');
-    e.waitUntil(
-        caches
-            .open(cacheName)
-            .then(cache => {
-                return cache.addAll(cacheAssets);
-            })
-    );
+// Pre-cache à l'installation du SW
+self.addEventListener('install', function(event) {
+    console.log('The service worker is being installed.');
+
+    // Le SW continue à installer jusqu'au return de la promise
+
+    event.waitUntil(precache());
+
 });
 
-self.addEventListener('activate', (e) => {
-    console.log('SW: ACTIVATED');
-    // Remove unwanted caches
-    e.waitUntil(
+// On renvoie une promise résolue quand tous les fichiers ont été pre-cachés
+function precache() {
+    return caches.open(cacheName).then(function (cache) {
+        return cache.addAll(cacheAssets);
+    });
+}
+
+// Dev helper: Suppression du vieux cache
+self.addEventListener('activate', (event) => {
+    console.log('Service worker: Activated');
+    event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cache => {
                     if(cache !== cacheName){
-                        console.log('SW: CLEARING OLD (%s) CACHE', cache);
+                        console.log('Service Worker: Clearing old cache: %s', cache);
                         return caches.delete(cache);
                     }
                 })
@@ -36,26 +44,33 @@ self.addEventListener('activate', (e) => {
     );
 });
 
-self.addEventListener('fetch', function(event) {
-    event.respondWith(caches.match(event.request).then((response) => {
-        // caches.match() always resolves
-        // but in case of success response will have value
-        if (response !== undefined) {
-            return response;
-        } else {
-            return fetch(event.request)
-                .then((response) => {
-                    let responseClone = response.clone();
+addEventListener('fetch', event => {
 
-                    caches.open(cacheName).then((cache) => {
-                        cache.put(event.request, responseClone);
-                    });
+    // On intercepte la requete, et on la gere nous-mêmes.
+    event.respondWith(async function() {
 
-                    return response;
-                }).catch((err) => {
-                    console.log('SW: Problem reading the file in cache [%s]', err);
-                    return caches.match(event.request);
-                });
+        // On regarde si elle est dans le cache
+        const cachedResponse = await caches.match(event.request);
+
+        // Si oui, on la returne
+        if (cachedResponse) {
+            console.log('Serving: [%s] from the CACHE', event.request.url);
+            return cachedResponse;
         }
-    }));
+
+        // Sinon, on sert la requete à partir du réseau, et ensuite on la cache.
+        console.log('Serving: [%s] from the NETWORK', event.request.url);
+        return fetch(event.request).then(updateCache(event.request));
+    }());
 });
+
+function updateCache(request) {
+    return caches.open(cacheName).then(cache => {
+        return fetch(request).then(response => {
+            const resClone = response.clone();
+            if (response.status < 400)
+                return cache.put(request, resClone);
+            return response;
+        });
+    });
+}
