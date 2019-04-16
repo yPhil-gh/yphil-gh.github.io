@@ -7,6 +7,7 @@ console.log('SW: I am alive, the cache is [%s]', cacheName);
 
 var cacheAssets = [
     'index.html',
+    'app.js',
     'style.css',
     'favicon.ico'
 ];
